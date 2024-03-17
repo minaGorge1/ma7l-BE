@@ -9,11 +9,11 @@ import ApiFeatures from "../../../utils/apiFeatures.js"
 
 export const getProducts = asyncHandler(async (req, res, next) => {
 
-    const apiFeature = new ApiFeatures(productModel.find({ isDeleted: false }).populate([
+    const apiFeature = new ApiFeatures(productModel.find({ isDeleted: false })/* .populate([
         {
             path: "subcategoryId"
         }
-    ]), req.query).paginate().filter().sort().search().select()
+    ]) */, req.query).paginate().filter().sort().search().select()
     const product = await apiFeature.mongooseQuery
 
 

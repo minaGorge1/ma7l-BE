@@ -5,12 +5,12 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 
 export const getSubcategoryList = asyncHandler(async (req, res, next) => {
 
-    const apiFeature = new ApiFeatures(subcategoryModel.find({ isDeleted: false }).populate([
+    const apiFeature = new ApiFeatures(subcategoryModel.find({ isDeleted: false })/* .populate([
         {
             path: "categoryId",
             select: "name"
         }
-    ]), req.query).paginate().filter().sort().search().select()
+    ]) */, req.query).paginate().filter().sort().search().select()
     const subcategory = await apiFeature.mongooseQuery
 
     return res.status(200).json({ message: "Done", subcategory  })

@@ -23,7 +23,7 @@ brandRouter.post("/:brandId/update",
     validation(validators.updateBrand),
     brandController.updateBrand)
 
-brandRouter.delete("/delete-brand/:brandId",
+brandRouter.delete("/:brandId/delete",
     auth(endpoint.delete),
     validation(validators.deleteBrand),
     brandController.deleteBrand);
