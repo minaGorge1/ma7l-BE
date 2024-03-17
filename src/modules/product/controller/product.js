@@ -7,7 +7,7 @@ import userModel from "../../../../DB/model/User.model.js"
 import { paginate } from "../../../utils/paginate.js"
 import ApiFeatures from "../../../utils/apiFeatures.js"
 
- export const getProducts = asyncHandler(async (req, res, next) => {
+export const getProducts = asyncHandler(async (req, res, next) => {
 
     const apiFeature = new ApiFeatures(productModel.find({ isDeleted: false }).populate([
         {
@@ -18,13 +18,13 @@ import ApiFeatures from "../../../utils/apiFeatures.js"
 
 
 
-    return res.status(200).json({ message: "Done", product  })
+    return res.status(200).json({ message: "Done", product })
 
-   /*  const apiFeature = new ApiFeatures(productModel.find(), req.query).paginate().filter().sort().search().select()
-    const productList = await apiFeature.mongooseQuery
-
-    return res.json({ message: "Done", productList }) */
-}) 
+    /*  const apiFeature = new ApiFeatures(productModel.find(), req.query).paginate().filter().sort().search().select()
+     const productList = await apiFeature.mongooseQuery
+ 
+     return res.json({ message: "Done", productList }) */
+})
 
 /* export const getProducts = asyncHandler(async (req, res, next) => {
 
@@ -49,7 +49,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
         brandId
     } = req.body;
 
-    if (await productModel.findOne({ name:name })) {
+    if (await productModel.findOne({ name: name })) {
         return next(new Error("duplicated name", { cause: 400 }))
     }
 
