@@ -9,11 +9,15 @@ const customerSchema = new Schema({
         lower: true,
         trim: true
     },
-    phone: {
+    phone: [{
         type: String,
         required: true
-    },
+    }],
     address: String,
+    mony: {
+        type : Number,
+        default: 0
+    },
     description: String,
     status: {
         type: String,
