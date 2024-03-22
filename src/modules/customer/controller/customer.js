@@ -26,6 +26,15 @@ export const createCustomer = asyncHandler(async (req, res, next) => {
     if (await customerModel.findOne({ name })) {
         return next(new Error("Duplicated Name", { cause: 404 }))
     }
+
+    if (req.body.mony && (!req.body.status || req.body.status === 'صافي')) {
+        return next(new Error(`Error: Error can't be صافي when fined mony`, { status: 409 }));
+    }
+
+    if (req.body.mony == 0 && (!req.body.status || req.body.status === "عليه فلوس" || req.body.status === 'ليه فلوس')) {
+        return next(new Error(`Error: Error can't be عليه فلوس or ليه فلوس when not fined mony`, { status: 409 }));
+    }
+
     const customer = await customerModel.create(req.body)
     return res.json({ message: "Done", customer });
 })

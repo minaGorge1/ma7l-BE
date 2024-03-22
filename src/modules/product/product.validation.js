@@ -6,7 +6,7 @@ export const createProduct = joi.object({
     name: joi.string().min(2).max(50).required(),
     description: joi.string(),
     stock: joi.number().positive().integer().min(1).required(),
-    price: joi.number().positive().min(1).required(),
+    finalPrice: joi.number().positive().min(1).required(),
     realPrice: joi.number().positive().min(1).required(),
     details: joi.object(),
     titleId: generalFields.id,
