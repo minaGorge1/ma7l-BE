@@ -4,11 +4,11 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 import ApiFeatures from "../../../utils/apiFeatures.js"
 
 export const getCategoryList = asyncHandler(async (req, res, next) => {
-    const apiFeature = new ApiFeatures(categoryModel.find({ isDeleted: false })/* .populate([
+    const apiFeature = new ApiFeatures(categoryModel.find({ isDeleted: false }).populate([
         {
-            path: "Subcategory"
+            path: "subcategory"
         }
-    ]) */, req.query).paginate().filter().sort().search().select()
+    ]) , req.query).paginate().filter().sort().search().select()
     const category = await apiFeature.mongooseQuery
 
 

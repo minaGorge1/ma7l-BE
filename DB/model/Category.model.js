@@ -13,7 +13,7 @@ const categorySchema = new Schema({
     timestamps: true
 })
 
-categorySchema.virtual("Subcategory",{
+categorySchema.virtual("subcategory",{
     localField:"_id",
     foreignField:"categoryId",
     ref :"Subcategory"

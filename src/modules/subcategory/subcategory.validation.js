@@ -3,6 +3,7 @@ import { generalFields } from "../../middleware/validation.js";
 
 export const createSubcategory = joi.object({
     categoryId: generalFields.id,
+    titleId: generalFields.id,
     name:joi.string().min(2).max(50).required(),
     details: joi.object()
 }).required()
