@@ -2,12 +2,13 @@ import joi from "joi";
 import { generalFields } from "../../middleware/validation.js";
 
 export const createBrand = joi.object({
-    name:joi.string().min(2).max(50).required(),
+    name:joi.string().min(2).max(50).required()
 }).required()
 
 export const updateBrand = joi.object({
     brandId: generalFields.id,
     name:joi.string().min(2).max(50),
+    isDeleted: joi.boolean()
 }).required()
 
 export const deleteBrand = joi.object({

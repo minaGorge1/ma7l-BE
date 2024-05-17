@@ -15,6 +15,7 @@ export const updateCategory = joi.object({
     titleId: generalFields.id,
     categoryId: generalFields.id,
     name: joi.string().min(2).max(50),
+    isDeleted: joi.boolean()
 }).required()
 
 export const deleteCategory = joi.object({

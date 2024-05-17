@@ -17,6 +17,7 @@ export const createProduct = joi.object({
 
 
 export const updateProduct = joi.object({
+    isDeleted: joi.boolean(),
     name: joi.string().min(2).max(50),
     description: joi.string(),
     stock: joi.number().positive().integer().min(1),

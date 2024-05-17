@@ -3,7 +3,7 @@ import ApiFeatures from "../../../utils/apiFeatures.js";
 import { asyncHandler } from "../../../utils/errorHandling.js";
 
 export const getBrandList = asyncHandler(async (req, res, next) => {
-    const apiFeature = new ApiFeatures(brandModel.find({ isDeleted: false }), req.query).paginate().filter().sort().search().select()
+    const apiFeature = new ApiFeatures(brandModel.find(/* { isDeleted: false } */), req.query).paginate().filter().sort().search().select()
     const brand = await apiFeature.mongooseQuery
 
     return res.status(200).json({ message: "Done", brand })
@@ -13,7 +13,7 @@ export const getBrandList = asyncHandler(async (req, res, next) => {
 export const createBrand = asyncHandler(async (req, res, next) => {
     const { name } = req.body;
     if (await brandModel.findOne({ name: name })) {
-        return next(new Error( `Duplicated brand name ${name}` , { cause: 409 }))
+        return next(new Error(`Duplicated brand name ${name}`, { cause: 409 }))
     }
     const brand = await brandModel.create({
         name,
@@ -28,6 +28,7 @@ export const createBrand = asyncHandler(async (req, res, next) => {
 export const updateBrand = asyncHandler(async (req, res, next) => {
     const { brandId } = req.params
     const brand = await brandModel.findById(brandId)
+
     if (!brand) {
         return next(new Error("In-valid brand id", { cause: 404 }))
     }
@@ -42,6 +43,7 @@ export const updateBrand = asyncHandler(async (req, res, next) => {
         brand.name = req.body.name
     }
     brand.updatedBy = req.user._id
+    brand.isDeleted = req.body.isDeleted
     await brand.save()
     return res.status(200).json({ message: "Done", brand })
 })

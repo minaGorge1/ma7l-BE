@@ -11,7 +11,7 @@ export const test = (req, res, next) => {
 //get customer
 export const customerProfiles = asyncHandler(async (req, res, next) => {
 
-    const apiFeature = new ApiFeatures(customerModel.find({ isDeleted: false }), req.query).paginate().filter().sort().search().select()
+    const apiFeature = new ApiFeatures(customerModel.find(/* { isDeleted: false } */), req.query).paginate().filter().sort().search().select()
     const customer = await apiFeature.mongooseQuery
 
     return res.status(200).json({ message: "Done", customer })

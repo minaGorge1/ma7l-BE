@@ -11,7 +11,7 @@ import customerModel from "../../../../DB/model/Customer.model.js";
 export const getOrders = asyncHandler(async (req, res, next) => {
     /*   const x = order[1].createdAt
       console.log(`${x.getDate()}/${x.getMonth()+1}/${x.getFullYear()}`); */
-    const apiFeature = new ApiFeatures(orderModel.find({ isDeleted: false }), req.query).paginate().filter().sort().search().select()
+    const apiFeature = new ApiFeatures(orderModel.find(/* { isDeleted: false } */), req.query).paginate().filter().sort().search().select()
     const order = await apiFeature.mongooseQuery
 
   /*   await orderModel.updateOne({ _id: orderId }, { status: 'delivered', updatedBy: req.user._id })

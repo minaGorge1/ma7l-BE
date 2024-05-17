@@ -3,7 +3,7 @@ import ApiFeatures from "../../../utils/apiFeatures.js";
 import { asyncHandler } from "../../../utils/errorHandling.js";
 
 export const getTitleList = asyncHandler(async (req, res, next) => {
-    const apiFeature = new ApiFeatures(titleModel.find({ isDeleted: false }).populate([
+    const apiFeature = new ApiFeatures(titleModel.find(/* { isDeleted: false } */).populate([
         {
             path: "category",
         }
@@ -19,7 +19,7 @@ export const createTitle = asyncHandler(async (req, res, next) => {
         // return res.status(409).json({ message: `Duplicated title name ${name}` })
         return next(new Error(`Duplicated title name ${name}`, { cause: 409 }))
     }
-      
+
     const title = await titleModel.create({
         name,
         createdBy: req.user._id
@@ -54,6 +54,7 @@ export const updateTitle = asyncHandler(async (req, res, next) => {
         title.titleId = req.body.titleId
     }
     //await updateOne({ _id: titleId }, req.body)
+    title.isDeleted = req.body.isDeleted
     title.updatedBy = req.user._id
     await title.save()
     return res.status(200).json({ message: "Done", title })

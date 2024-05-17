@@ -5,7 +5,7 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 
 export const getSubcategoryList = asyncHandler(async (req, res, next) => {
 
-    const apiFeature = new ApiFeatures(subcategoryModel.find({ isDeleted: false })/* .populate([
+    const apiFeature = new ApiFeatures(subcategoryModel.find(/* { isDeleted: false } */)/* .populate([
         {
             path: "categoryId",
             select: "name"
@@ -59,6 +59,7 @@ export const updateSubcategory = asyncHandler(async (req, res, next) => {
     }
     subcategory.updatedBy = req.user._id
     subcategory.details = req.body.details
+    subcategory.isDeleted =req.body.isDeleted
     await subcategory.save()
     return res.status(200).json({ message: "Done", subcategory })
 })
