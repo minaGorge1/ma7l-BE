@@ -48,7 +48,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
         productsIds.push(product.productId)
         product.name = checkProduct.name;
 
-        const checkTitle = await titleModel.findById({ _id: checkProduct.titleId })
+        /* const checkTitle = await titleModel.findById({ _id: checkProduct.titleId })
         if (checkTitle.name == "سيور") {
             const subcategory = await subcategoryModel.findById({ _id: checkProduct.subcategoryId })
             const inch = await checkProduct.name.split("*")
@@ -59,9 +59,13 @@ export const createOrder = asyncHandler(async (req, res, next) => {
             product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
             product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
         }
-
+ */
         /*      product.unitPrice = checkProduct.price
                 product.finalPrice = (checkProduct.price) * product.quantity; */
+
+        product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
+        product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
+
         finalProductsList.push(product);
         finalPrice += product.finalPrice;
     }

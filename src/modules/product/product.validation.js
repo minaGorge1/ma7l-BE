@@ -21,7 +21,7 @@ export const updateProduct = joi.object({
     name: joi.string().min(2).max(50),
     description: joi.string(),
     stock: joi.number().positive().integer().min(1),
-    price: joi.number().positive().min(1),
+    finalPrice: joi.number().positive().min(1),
     realPrice: joi.number().positive().min(1),
     details: joi.object(),
     titleId: generalFields.id,
