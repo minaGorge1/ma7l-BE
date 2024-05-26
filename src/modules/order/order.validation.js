@@ -5,6 +5,7 @@ export const createOrder = joi.object({
     note: joi.string().min(2).max(5000),
     customerId: generalFields.id,
     paid: joi.number().positive(),
+    profitMargin: joi.number().positive(),
     status: joi.string().valid('انتظار', 'تم الدفع', 'رفض'),
     products: joi.array().items(joi.object({
         productId: generalFields.id,

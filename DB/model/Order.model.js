@@ -17,6 +17,7 @@ const orderSchema = new Schema({
     }],
     finalPrice: { type: Number, default: 1, required: true },
     paid: { type: Number, default: 1, required: true },
+    profitMargin: { type: Number, default: 1, required: true },
     status: {
         type: String,
         default: 'تم الدفع',

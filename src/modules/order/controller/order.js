@@ -21,7 +21,7 @@ export const getOrders = asyncHandler(async (req, res, next) => {
 
 //createOrder
 export const createOrder = asyncHandler(async (req, res, next) => {
-    const { products, note, paid, customerId, status } = req.body; // add 5asm + al madfo3
+    const { products, note, paid, customerId, status , profitMargin} = req.body; // add 5asm + al madfo3
 
     const date = `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
 
@@ -78,7 +78,8 @@ export const createOrder = asyncHandler(async (req, res, next) => {
         products: finalProductsList,
         finalPrice,
         paid: req.body?.paid || finalPrice,
-        status
+        status,
+        profitMargin
     })
 
     for (const product of products) {
