@@ -15,14 +15,17 @@ const customerSchema = new Schema({
     }],
     address: String,
     mony: {
-        type : Number,
+        type: Number,
         default: 0
     },
-    description: String,
+    description: {
+        type: String,
+        default: "empty"
+    },
     status: {
         type: String,
         default: "صافي",
-        enum: ["صافي","ليه فلوس", "عليه فلوس"]
+        enum: ["صافي", "ليه فلوس", "عليه فلوس"]
     },
     isDeleted: {
         type: Boolean,

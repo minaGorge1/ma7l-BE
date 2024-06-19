@@ -7,6 +7,8 @@ const productSchema = new Schema({
     details: {type:Object},
     stock: { type: Number, required: true, default: 1 },
 
+    type: {type:String},
+
     realPrice: { type: Number, required: true, default: 1 },
     finalPrice: { type: Number, required: true, default: 1 },
     

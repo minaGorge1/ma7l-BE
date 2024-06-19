@@ -19,6 +19,7 @@ export const updateCustomer = joi.object({
     address: joi.string(),
     description: joi.string(),
     status: joi.string(),
+    mony: joi.number(),
     isDeleted: joi.boolean()
 })
 
