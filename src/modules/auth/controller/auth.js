@@ -34,7 +34,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
     if (!match) {
         return next(new Error("In-Valid password", { cause: 400 }))
     }
-    const access_token = createToken({ payload: { id: user._id, role: user.role, userName: user.userName, email: user.email }, expiresIn: 30 * 60 })
+    const access_token = createToken({ payload: { id: user._id, role: user.role, userName: user.userName, email: user.email }, expiresIn: 60 * 60 * 2 })
     const refresh_token = createToken({ payload: { id: user._id, role: user.role, userName: user.userName, email: user.email }, expiresIn: 60 * 60 * 24 * 360 })
     user.status = "online"
     await user.save()
