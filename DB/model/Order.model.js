@@ -3,12 +3,13 @@ import mongoose, { Schema, model, Types } from "mongoose";
 const orderSchema = new Schema({
     userId: { type: Types.ObjectId, ref: "User", required: true },
     date: { type: String },
+    time: { type: String },
     customerId: { type: Types.ObjectId, ref: "Customer" },
     updatedBy: { type: Types.ObjectId, ref: "User" },
     note: { type: String },
     products: [{
         name: { type: String, required: true },
-        productId: { type: Types.ObjectId, ref: "Product", required: true},
+        productId: { type: Types.ObjectId, ref: "Product", required: true },
         quantity: { type: Number, default: 1, required: true },
         discount: { type: Number, default: 0 },
         inchPrice: { type: Number, default: 0 },

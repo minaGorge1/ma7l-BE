@@ -15,7 +15,7 @@ export const getOrders = asyncHandler(async (req, res, next) => {
     const order = await apiFeature.mongooseQuery
 
   /*   await orderModel.updateOne({ _id: orderId }, { status: 'delivered', updatedBy: req.user._id })
-    */ return res.status(201).json({ massage: 'Done', order })
+    */ return res.status(201).json({ message: 'Done', order })
 })
 
 
@@ -23,8 +23,12 @@ export const getOrders = asyncHandler(async (req, res, next) => {
 export const createOrder = asyncHandler(async (req, res, next) => {
     const { products, note, paid, customerId, status , profitMargin} = req.body; // add 5asm + al madfo3
 
-    const date = `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
-
+    const now = new Date();
+   
+    const hours = now.getHours();
+    const time = `${hours > 12 ? hours - 12 : hours} : ${now.getMinutes()} ${hours >= 12 ? 'PM' : 'AM'}`;
+    const date = `${now.getDate() + 1}-${now.getMonth() + 1}-${now.getFullYear()}`;
+    
     if (customerId) {
         if (!await customerModel.findById(customerId)) {
             return next(new Error("In-valid customer Id", { cause: 400 }))
@@ -72,6 +76,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 
     const order = await orderModel.create({
         date,
+        time,
         userId: req.user._id,
         customerId,
         note,
@@ -86,7 +91,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
         await productModel.updateOne({ _id: product.productId }, { $inc: { stock: -parseInt(product.quantity) } })
     }
 
-    return res.status(201).json({ massage: 'Done', order })
+    return res.status(201).json({ message: 'Done', order })
 })
 
 
@@ -166,7 +171,7 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
     for (const product of products) {
         await productModel.updateOne({ _id: product.productId }, { $inc: { stock: -parseInt(product.quantity) } })
     }
-    return res.status(201).json({ massage: 'Done', order })
+    return res.status(201).json({ message: 'Done', order })
 })
 
 ///cancelOrder
@@ -181,7 +186,7 @@ export const cancelOrder = asyncHandler(async (req, res, next) => {
         await productModel.updateOne({ _id: product.productId }, { $inc: { stock: parseInt(product.quantity) } })
     }
 
-    return res.status(201).json({ massage: 'Done', order })
+    return res.status(201).json({ message: 'Done', order })
 })
 
 

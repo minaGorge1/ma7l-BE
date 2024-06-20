@@ -3,16 +3,19 @@ import mongoose, { Schema, model, Types } from "mongoose";
 const productSchema = new Schema({
     customId: { type: String, required: true, },
     name: { type: String, required: true, trim: true, lower: true },
-    description: { type: String, trim: true },
-    details: {type:Object},
+    description: {
+        type: String,
+        default: "empty"
+    },
+    details: { type: Object },
     stock: { type: Number, required: true, default: 1 },
 
-    type: {type:String},
+    type: { type: String },
 
     realPrice: { type: Number, required: true, default: 1 },
     finalPrice: { type: Number, required: true, default: 1 },
-    
-    titleId:{ type: Types.ObjectId, ref: "Title", required: true },
+
+    titleId: { type: Types.ObjectId, ref: "Title", required: true },
     categoryId: { type: Types.ObjectId, ref: "Category", required: true },
     subcategoryId: { type: Types.ObjectId, ref: "Subcategory", required: true },
     brandId: { type: Types.ObjectId, ref: "Brand", required: true },
