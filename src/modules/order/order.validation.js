@@ -23,6 +23,8 @@ export const cancelOrder = joi.object({
 
 export const updateOrder = joi.object({
     isDeleted: joi.boolean(),
+    time: joi.string(),
+    date: joi.string(),
     orderId: generalFields.id.required(),
     note: joi.string().min(2).max(5000),
     customerId: generalFields.id,

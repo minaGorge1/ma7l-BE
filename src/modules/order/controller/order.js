@@ -21,14 +21,14 @@ export const getOrders = asyncHandler(async (req, res, next) => {
 
 //createOrder
 export const createOrder = asyncHandler(async (req, res, next) => {
-    const { products, note, paid, customerId, status , profitMargin} = req.body; // add 5asm + al madfo3
+    const { products, note, paid, customerId, status, profitMargin } = req.body; // add 5asm + al madfo3
 
     const now = new Date();
-   
+
     const hours = now.getHours();
     const time = `${hours > 12 ? hours - 12 : hours} : ${now.getMinutes()} ${hours >= 12 ? 'PM' : 'AM'}`;
-    const date = `${now.getDate() + 1}-${now.getMonth() + 1}-${now.getFullYear()}`;
-    
+    const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
+
     if (customerId) {
         if (!await customerModel.findById(customerId)) {
             return next(new Error("In-valid customer Id", { cause: 400 }))
@@ -98,7 +98,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 ///updateOrder 
 export const updateOrder = asyncHandler(async (req, res, next) => {
     const { orderId } = req.params;
-    const { products, note, date, paid, customerId, status } = req.body;
+    const { products, note, date, time, paid, customerId, status } = req.body;
 
     const order = await orderModel.findById({ _id: orderId })
     if (!order) {
@@ -160,6 +160,9 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
 
     order.note = note
     order.status = status
+    order.date = date
+    order.time = time
+    order.paid = paid
 
     //price
     order.products.map((e, i) => finalPrice += e.finalPrice)
