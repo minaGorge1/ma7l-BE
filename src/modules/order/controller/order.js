@@ -158,11 +158,12 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
 
     }
 
-    order.note = note
-    order.status = status
-    order.date = date
-    order.time = time
-    order.paid = paid
+    note ? order.note = note : order.note
+    status ? order.status = status : order.status
+    date ? order.date = date : order.date
+    time ? order.time = time : order.time
+    paid ? order.paid = paid : order.paid
+
 
     //price
     order.products.map((e, i) => finalPrice += e.finalPrice)
