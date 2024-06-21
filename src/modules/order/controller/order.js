@@ -130,7 +130,8 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
 
             const oldProduct = await order.products.find(pro => pro.productId == product.productId);
             if (oldProduct) {
-                await productModel.updateOne({ _id: product.productId }, { $inc: { stock: parseInt(oldProduct.quantity) } })
+                await productModel.updateOne({ _id: product.productId }
+                    , { $inc: { stock: parseInt(oldProduct.quantity) } })
                 product.quantity = (parseInt(product?.quantity) || oldProduct.quantity)
                 product.inchPrice = (product?.inchPrice || oldProduct.inchPrice)
                 product.discount = (product?.discount || oldProduct.discount)
@@ -141,17 +142,17 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
             productsIds.push(product.productId)
             product.name = checkProduct.name;
 
-            const checkTitle = await titleModel.findById({ _id: checkProduct.titleId })
-            if (checkTitle.name == "سيور") {
-                const subcategory = await subcategoryModel.findById({ _id: checkProduct.subcategoryId })
-                const inch = await checkProduct.name.split("*")
-                product.unitPrice = Math.ceil((product?.inchPrice || subcategory.details.inchPrice) * parseInt(inch[0]))
-                product.finalPrice = Math.ceil((product?.inchPrice || subcategory.details.inchPrice) * parseInt(inch[0])) * product.quantity;
-            } else {
+            /*   const checkTitle = await titleModel.findById({ _id: checkProduct.titleId })
+              if (checkTitle.name == "سيور") {
+                  const subcategory = await subcategoryModel.findById({ _id: checkProduct.subcategoryId })
+                  const inch = await checkProduct.name.split("*")
+                  product.unitPrice = Math.ceil((product?.inchPrice || subcategory.details.inchPrice) * parseInt(inch[0]))
+                  product.finalPrice = Math.ceil((product?.inchPrice || subcategory.details.inchPrice) * parseInt(inch[0])) * product.quantity;
+              } else {} */
 
-                product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
-                product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
-            }
+            product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
+            product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
+
 
             order.products.push(product)
         }
