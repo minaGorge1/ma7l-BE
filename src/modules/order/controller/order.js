@@ -114,6 +114,8 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
     const productsIds = []
     const finalProductsList = []
     let finalPrice = 0;
+    let realPrice = 0;
+    let profit = 0;
     if (products) {
 
         for (const product of products) {
@@ -153,12 +155,22 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
             product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
             product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
 
-
             order.products.push(product)
         }
 
     }
 
+    for (const product of order.products) {
+        const checkProduct = await productModel.findOne({
+            _id: product.productId,
+            stock: { $gte: product.quantity },
+            isDeleted: false
+        })
+        realPrice += checkProduct.realPrice * product.quantity
+        console.log(realPrice);
+    }
+
+    /*   profit += (req.body?.paid || finalPrice) - realPrice */
     note ? order.note = note : order.note
     status ? order.status = status : order.status
     date ? order.date = date : order.date
@@ -170,6 +182,7 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
     order.products.map((e, i) => finalPrice += e.finalPrice)
     order.finalPrice = finalPrice
     order.paid = req.body?.paid || finalPrice
+    order.profitMargin = order.paid - realPrice
 
     await order.save()
 

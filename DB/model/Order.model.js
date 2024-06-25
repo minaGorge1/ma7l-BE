@@ -20,10 +20,10 @@ const orderSchema = new Schema({
     paid: { type: Number, default: 1, required: true },
     profitMargin: { type: Number, default: 1, required: true },
     status: {
-        type: String,
-        default: 'تم الدفع',
-        enum: ['انتظار', 'تم الدفع', 'رفض']
-    },
+    type: String,
+    default: 'تم الدفع',
+    enum: ['انتظار', 'تم الدفع', 'رفض']
+},
     isDeleted: { type: Boolean, default: false }
 }, {
     timestamps: true

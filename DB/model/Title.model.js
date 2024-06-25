@@ -5,6 +5,7 @@ const titleSchema = new Schema({
     name: { type: String, required: true, unique: true, trim: true, lower: true },
     createdBy: { type: Types.ObjectId, ref: "User", required: true },
     updatedBy: { type: Types.ObjectId, ref: "User" },
+    description: { type: String, default: "empty" },
     isDeleted: { type: Boolean, default: false }
 }, {
     toJSON: { virtuals: true },

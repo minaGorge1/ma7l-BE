@@ -3,10 +3,7 @@ import mongoose, { Schema, model, Types } from "mongoose";
 const productSchema = new Schema({
     customId: { type: String, required: true, },
     name: { type: String, required: true, trim: true, lower: true },
-    description: {
-        type: String,
-        default: "empty"
-    },
+    description: { type: String, default: "empty" },
     details: { type: Object },
     stock: { type: Number, required: true, default: 1 },
 
