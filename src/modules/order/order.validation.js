@@ -33,7 +33,7 @@ export const updateOrder = joi.object({
     products: joi.array().items(joi.object({
         productId: generalFields.id,
         quantity: joi.number().positive().integer().min(1),
-        discount: joi.number().positive(),
+        discount: joi.number(),
         inchPrice: joi.number().positive()
     })
     )

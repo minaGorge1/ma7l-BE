@@ -6,6 +6,7 @@ import subcategoryModel from "../../../../DB/model/Subcategory.model.js";
 import { paginate } from "../../../utils/paginate.js"
 import ApiFeatures from "../../../utils/apiFeatures.js"
 import customerModel from "../../../../DB/model/Customer.model.js";
+import moment from "moment/moment.js";
 
 //getOrder
 export const getOrders = asyncHandler(async (req, res, next) => {
@@ -25,9 +26,9 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 
     const now = new Date();
 
-    const hours = now.getHours();
+    const hours = now.getHours(); 
     const time = `${hours > 12 ? hours - 12 : hours} : ${now.getMinutes()} ${hours >= 12 ? 'PM' : 'AM'}`;
-    const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
+    const date = moment(now).format('DD-MM-YYYY');
 
     if (customerId) {
         if (!await customerModel.findById(customerId)) {
@@ -52,7 +53,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
         productsIds.push(product.productId)
         product.name = checkProduct.name;
 
-        /* const checkTitle = await titleModel.findById({ _id: checkProduct.titleId })
+        const checkTitle = await titleModel.findById({ _id: checkProduct.titleId })
         if (checkTitle.name == "سيور") {
             const subcategory = await subcategoryModel.findById({ _id: checkProduct.subcategoryId })
             const inch = await checkProduct.name.split("*")
@@ -63,12 +64,13 @@ export const createOrder = asyncHandler(async (req, res, next) => {
             product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
             product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
         }
- */
+
         /*      product.unitPrice = checkProduct.price
                 product.finalPrice = (checkProduct.price) * product.quantity; */
 
-        product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
-        product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
+        /*   product.unitPrice = checkProduct.finalPrice - (product?.discount || 0)
+          product.finalPrice = (checkProduct.finalPrice - (product?.discount || 0)) * product.quantity;
+   */
 
         finalProductsList.push(product);
         finalPrice += product.finalPrice;
@@ -119,12 +121,19 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
     if (products) {
 
         for (const product of products) {
-
-            const checkProduct = await productModel.findOne({
-                _id: product.productId,
-                stock: { $gte: product.quantity },
-                isDeleted: false
-            })
+            let checkProduct;
+            if (product.quantity) {
+                checkProduct = await productModel.findOne({
+                    _id: product.productId,
+                    stock: { $gte: product.quantity },
+                    isDeleted: false
+                })
+            } else {
+                checkProduct = await productModel.findOne({
+                    _id: product.productId,
+                    isDeleted: false
+                })
+            }
 
             if (!checkProduct) {
                 return next(new Error(`In-valid product ${product.productId}`, { cause: 400 }))
@@ -167,7 +176,6 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
             isDeleted: false
         })
         realPrice += checkProduct.realPrice * product.quantity
-        console.log(realPrice);
     }
 
     /*   profit += (req.body?.paid || finalPrice) - realPrice */
@@ -199,7 +207,7 @@ export const cancelOrder = asyncHandler(async (req, res, next) => {
     if (!order) {
         return next(new Error(`In-valid order`, { cause: 400 }))
     }
-    await orderModel.updateOne({ _id: orderId, userId: req.user._id }, { status: 'رفض', updatedBy: req.user._id })
+    await orderModel.updateOne({ _id: orderId, userId: req.user._id }, { status: 'رفض', updatedBy: req.user._id, isDeleted: true })
     for (const product of order.products) {
         await productModel.updateOne({ _id: product.productId }, { $inc: { stock: parseInt(product.quantity) } })
     }
