@@ -26,7 +26,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 
     const now = new Date();
 
-    const hours = now.getHours(); 
+    const hours = now.getHours();
     const time = `${hours > 12 ? hours - 12 : hours} : ${now.getMinutes()} ${hours >= 12 ? 'PM' : 'AM'}`;
     const date = moment(now).format('DD-MM-YYYY');
 

@@ -9,6 +9,7 @@ import orderRouter from "./modules/order/order.router.js";
 import customerRouter from "./modules/customer/customer.route.js";
 import authRouter from "./modules/auth/auth.router.js";
 import { globalErrorHandling } from "./utils/errorHandling.js";
+import incomeRouter from "./modules/income/income.router.js";
 
 const initApp = (app, express) => {
     app.use(cors())
@@ -59,6 +60,7 @@ const initApp = (app, express) => {
     app.use("/product", productRouter)
     app.use("/customer", customerRouter)
 
+    app.use("/income", incomeRouter)
     app.use("*", (req, res) => res.json(`404 Not found`))
 
     app.use(globalErrorHandling)

@@ -11,8 +11,9 @@ const incomeSchema = new Schema({
         nameE: { type: String, required: true },
         monyE: { type: Number, required: true },
         descriptionE: { type: String, default: "empty" },
+        isDeleted: { type: Boolean, default: false }
     }],
-    monyCheck: { type: Number, required: true },
+    monyCheck: { type: Number, default: 0 },
     updatedBy: { type: Types.ObjectId, ref: "User" },
 }, {
     timestamps: true
