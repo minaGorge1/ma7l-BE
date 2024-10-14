@@ -27,8 +27,9 @@ export const getIncomeList = asyncHandler(async (req, res, next) => {
 export const createIncome = asyncHandler(async (req, res, next) => {
     const { date, mony, profDay } = req.body;
 
+
     // check orders
-    const orders = await orderModel.find({ date: date })
+    const orders = await orderModel.find({ date: date, isDeleted: false })
 
     if (!orders || orders.length === 0) {
         return next(new Error(`orders not found date : ${date}`, { cause: 409 }))
@@ -66,16 +67,18 @@ export const updateIncome = asyncHandler(async (req, res, next) => {
     const { incomeId } = req.params
     const { expenses, monyCheck, description } = req.body
     const income = await incomeModel.findById(incomeId)
-
+    console.log(req.body);
     if (!income) {
         return next(new Error("In-valid income id", { cause: 404 }))
     }
 
-    const filteredExpenses = expenses.filter(expense => !expense.isDeleted);
+    if (expenses) {
+        const filteredExpenses = expenses.filter((expense) => !expense.isDeleted);
+        income.expenses = [...income.expenses, ...filteredExpenses];
+      }
 
     income.description = description
     income.monyCheck = monyCheck
-    income.expenses = filteredExpenses
     income.updatedBy = req.user._id
     /* income.isDeleted = isDeleted */
     await income.save()

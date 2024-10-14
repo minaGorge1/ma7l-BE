@@ -10,12 +10,12 @@ export const updateIncome = joi.object({
     expenses: joi.array().items(joi.object({
         nameE: joi.string().min(2).max(50).required(),
         monyE: joi.number().positive().integer().min(1).required(),
-        descriptionE: joi.string().min(2).max(500),
+        descriptionE: joi.string().max(500),
         isDeleted: joi.boolean()
-    }).required()),
+    })),
     isDeleted: joi.boolean(),
-    monyCheck: joi.number().positive().integer().min(1).required(),
-    description: joi.string().min(2).max(500),
+    monyCheck: joi.number().positive().integer(),
+    description: joi.string().max(500),
     isDeleted: joi.boolean()
 }).required()
 
