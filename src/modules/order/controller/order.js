@@ -101,6 +101,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 export const updateOrder = asyncHandler(async (req, res, next) => {
     const { orderId } = req.params;
     const { products, note, date, time, paid, customerId, status } = req.body;
+console.log(req.body);
 
     const order = await orderModel.findById({ _id: orderId })
     if (!order) {
@@ -183,7 +184,7 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
     status ? order.status = status : order.status
     date ? order.date = date : order.date
     time ? order.time = time : order.time
-    paid ? order.paid = paid : order.paid
+    paid ? order.paid = paid : null
 
 
     //price
@@ -193,7 +194,7 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
     order.profitMargin = order.paid - realPrice
 
     await order.save()
-
+    console.log(order)
     for (const product of products) {
         await productModel.updateOne({ _id: product.productId }, { $inc: { stock: -parseInt(product.quantity) } })
     }

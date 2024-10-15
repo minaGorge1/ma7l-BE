@@ -8,8 +8,9 @@ export const createIncome = joi.object({
 export const updateIncome = joi.object({
     incomeId: generalFields.id,
     expenses: joi.array().items(joi.object({
-        nameE: joi.string().min(2).max(50).required(),
-        monyE: joi.number().positive().integer().min(1).required(),
+        _id: generalFields.id,
+        nameE: joi.string().min(2).max(50),
+        monyE: joi.number().positive().integer().min(1),
         descriptionE: joi.string().max(500),
         isDeleted: joi.boolean()
     })),

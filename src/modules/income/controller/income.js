@@ -67,21 +67,39 @@ export const updateIncome = asyncHandler(async (req, res, next) => {
     const { incomeId } = req.params
     const { expenses, monyCheck, description } = req.body
     const income = await incomeModel.findById(incomeId)
-    console.log(req.body);
     if (!income) {
         return next(new Error("In-valid income id", { cause: 404 }))
     }
 
+
     if (expenses) {
-        const filteredExpenses = expenses.filter((expense) => !expense.isDeleted);
-        income.expenses = [...income.expenses, ...filteredExpenses];
-      }
+        expenses.map((expense) => {
+            if (expense._id) {
+                const oldExpense = income.expenses.find((e) => e._id.toString() === expense._id.toString())
+                if (oldExpense) {
+                    oldExpense.nameE = expense?.nameE || oldExpense.nameE
+                    oldExpense.monyE = expense?.monyE || oldExpense.monyE
+                    oldExpense.descriptionE = expense?.descriptionE || oldExpense.descriptionE
+                    oldExpense.isDeleted = expense?.isDeleted || oldExpense.isDeleted
+                    
+                } else {
+                    return next(new Error("In-valid expense id", { cause: 404 }))
+                }
+
+            } else {
+                const filteredExpenses = expenses.filter((expense) => !expense.isDeleted);
+                income.expenses = [...income.expenses, ...filteredExpenses];
+            }
+        })
+
+    }
 
     income.description = description
     income.monyCheck = monyCheck
     income.updatedBy = req.user._id
     /* income.isDeleted = isDeleted */
     await income.save()
+
     return res.status(200).json({ message: "Done", income })
 })
 
