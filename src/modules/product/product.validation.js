@@ -5,6 +5,7 @@ import { generalFields } from "../../middleware/validation.js"
 export const createProduct = joi.object({
     name: joi.string().min(2).max(50).required(),
     description: joi.string(),
+    place: joi.string(),
     stock: joi.number().positive().integer().min(1).required(),
     finalPrice: joi.number().positive().min(1).required(),
     realPrice: joi.number().positive().min(1).required(),
@@ -17,6 +18,7 @@ export const createProduct = joi.object({
 
 
 export const updateProduct = joi.object({
+    place: joi.string(),
     isDeleted: joi.boolean(),
     name: joi.string().min(2).max(50),
     description: joi.string(),

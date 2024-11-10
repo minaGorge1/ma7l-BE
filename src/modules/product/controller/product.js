@@ -46,7 +46,8 @@ export const createProduct = asyncHandler(async (req, res, next) => {
         titleId,
         categoryId,
         subcategoryId,
-        brandId
+        brandId,
+        place
     } = req.body;
 
     if (await productModel.findOne({ name: name })) {

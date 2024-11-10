@@ -6,7 +6,7 @@ const productSchema = new Schema({
     description: { type: String, default: "empty" },
     details: { type: Object },
     stock: { type: Number, required: true, default: 1 },
-
+    place: { type: String }, // new create valida in create and update  and display in front cop update and search 
     type: { type: String },
 
     realPrice: { type: Number, required: true, default: 1 },
