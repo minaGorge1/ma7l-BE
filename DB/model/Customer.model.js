@@ -13,8 +13,11 @@ const customerSchema = new Schema({
         type: String,
         required: true
     }],
-    address: String,
-    mony: {
+    address: {
+        type: String,
+        default: "empty"
+    },
+    money: {
         type: Number,
         default: 0
     },
@@ -27,6 +30,31 @@ const customerSchema = new Schema({
         default: "صافي",
         enum: ["صافي", "ليه فلوس", "عليه فلوس"]
     },
+    transactions: [{
+        amount: {
+            type: Number,
+            required: true,
+            min: [0, "Amount cannot be negative"]
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        },
+        type: {
+            type: String,
+            enum: ["تحويل", "كاش"],
+            required: true
+        },
+        description: {
+            type: String,
+            default: "No description"
+        },
+        clarification: { //df3 wla 5d 7agat 3notaa
+            type: String,
+            enum: ["دفع", "دين"],
+            required: true
+        }
+    }],
     isDeleted: {
         type: Boolean,
         default: false

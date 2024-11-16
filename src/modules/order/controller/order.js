@@ -88,10 +88,11 @@ export const createOrder = asyncHandler(async (req, res, next) => {
         status,
         profitMargin
     })
-
+    
     for (const product of products) {
         await productModel.updateOne({ _id: product.productId }, { $inc: { stock: -parseInt(product.quantity) } })
     }
+
 
     return res.status(201).json({ message: 'Done', order })
 })
@@ -194,7 +195,6 @@ export const updateOrder = asyncHandler(async (req, res, next) => {
     order.profitMargin = order.paid - realPrice
 
     await order.save()
-    console.log(order)
     for (const product of products) {
         await productModel.updateOne({ _id: product.productId }, { $inc: { stock: -parseInt(product.quantity) } })
     }

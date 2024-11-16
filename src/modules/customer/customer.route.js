@@ -10,7 +10,7 @@ customerRouter.get("/test", customerController.test)
 
 //get customer
 customerRouter.get("/",
-customerController.customerProfiles)
+    customerController.customerProfiles)
 
 
 //create customer
@@ -30,5 +30,23 @@ customerRouter.delete("/:customerId/delete",
     auth(endpoint.delete),
     validation(validators.deleteCustomer),
     customerController.deleteCustomer)
+
+//create customer
+customerRouter.post("/:customerId/createTransactions",
+    auth(endpoint.create),
+    validation(validators.createCustomerTransactions),
+    customerController.createCustomerTransactions)
+
+//update customer
+customerRouter.post("/:customerId/updateTransactions/:transactionId",
+    auth(endpoint.update),
+    validation(validators.updateCustomerTransactions),
+    customerController.updateCustomerTransactions)
+
+//delete customer
+customerRouter.delete("/:customerId/deleteTransactions/:transactionId",
+    auth(endpoint.delete),
+    validation(validators.deleteCustomerTransactions),
+    customerController.deleteCustomerTransactions)
 
 export default customerRouter
