@@ -147,9 +147,9 @@ export const createCustomerTransactions = asyncHandler(async (req, res, next) =>
     // Update the customer's money based on the transaction type
     if (clarification === "دفع") { // "Payment"
         customer.money -= amount;
-        customer.status = customer.money === 0 ? "صافي" : "عليه فلوس"; // "Clear" or "Owes money"
+        customer.money === 0 ? customer.status = "صافي" : customer.status = "عليه فلوس"; // "Clear" or "Owes money"
     } else if (clarification === "دين") { // "Debt"
-        customer.money += amount;
+        customer.money += Number(amount);
         customer.status = "عليه فلوس"; // "Owes money"
     }
 
@@ -158,7 +158,7 @@ export const createCustomerTransactions = asyncHandler(async (req, res, next) =>
         date: new Date(),
         type,
         description,
-        clarification
+        clarification,
     });
 
     await customer.save()
@@ -254,7 +254,7 @@ export const updateCustomerTransactions = asyncHandler(async (req, res, next) =>
     await customer.save();
 
     // Return the updated transaction
-    return res.json({ message: "Transaction updated successfully", transaction });
+    return res.json({ message: "Done", customer });
 });
 
 
@@ -275,12 +275,12 @@ export const deleteCustomerTransactions = asyncHandler(async (req, res, next) =>
     }
 
     // Determine the transaction details to restore the balance
-    const transactionToDelete = customer.transactions[transactionIndex];
+    /* const transactionToDelete = customer.transactions[transactionIndex];
     if (transactionToDelete.clarification === "دفع") { // "Payment"
         customer.money += transactionToDelete.amount; // Restore the money
     } else if (transactionToDelete.clarification === "دين") { // "Debt"
         customer.money -= transactionToDelete.amount; // Reduce the money
-    }
+    } */
 
     // Remove the transaction from the customer's transaction history
     customer.transactions.splice(transactionIndex, 1);
@@ -289,5 +289,5 @@ export const deleteCustomerTransactions = asyncHandler(async (req, res, next) =>
     await customer.save();
 
     // Return a success message with updated customer data
-    return res.json({ message: "Transaction deleted successfully", customer });
+    return res.json({ message: "Done", customer });
 });
