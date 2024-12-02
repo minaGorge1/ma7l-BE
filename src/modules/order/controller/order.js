@@ -30,8 +30,9 @@ export const createOrder = asyncHandler(async (req, res, next) => {
     const time = `${hours > 12 ? hours - 12 : hours} : ${now.getMinutes()} ${hours >= 12 ? 'PM' : 'AM'}`;
     const date = moment(now).format('DD-MM-YYYY');
 
+    const customer = await customerModel.findById(customerId)
     if (customerId) {
-        if (!await customerModel.findById(customerId)) {
+        if (!customer) {
             return next(new Error("In-valid customer Id", { cause: 400 }))
         }
     }

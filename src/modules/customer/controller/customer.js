@@ -69,7 +69,7 @@ export const createCustomer = asyncHandler(async (req, res, next) => {
 
 //update customer and create transaction
 export const updateCustomer = asyncHandler(async (req, res, next) => {
-    const { name, phone, address,/*  description, */ status, money, lastTransaction } = req.body
+    const { name, phone, address,  description, status, money, lastTransaction } = req.body
     const { customerId } = req.params
     const customer = await customerModel.findById(customerId)
     if (!customer) {
@@ -79,6 +79,8 @@ export const updateCustomer = asyncHandler(async (req, res, next) => {
     if (name) customer.name = name;
     if (phone) customer.phone = phone; // You might want to handle phone updates more carefully
     if (address) customer.address = address;
+    if (description) customer.description = description;
+    if (status) customer.status = status;
     // Allow money to be updated directly
     if (money !== undefined) {
         customer.money = money;
@@ -97,10 +99,10 @@ export const updateCustomer = asyncHandler(async (req, res, next) => {
         // Update the customer's money based on the transaction type
         if (clarification === "دفع") { // "Payment"
             customer.money -= amount;
-            customer.status = customer.money === 0 ? "صافي" : "عليه فلوس"; // "Clear" or "Owes money"
+            customer.status = customer.money === 0 ? "صافي" : " "; // "Clear" or "Owes money"
         } else if (clarification === "دين") { // "Debt"
             customer.money += amount;
-            customer.status = "عليه فلوس"; // "Owes money"
+            /* customer.status = "عليه فلوس";  */// "Owes money"
         }
 
         customer.transactions.push({
@@ -147,10 +149,10 @@ export const createCustomerTransactions = asyncHandler(async (req, res, next) =>
     // Update the customer's money based on the transaction type
     if (clarification === "دفع") { // "Payment"
         customer.money -= amount;
-        customer.money === 0 ? customer.status = "صافي" : customer.status = "عليه فلوس"; // "Clear" or "Owes money"
+        customer.money === 0 ? customer.status = "صافي" :" " // "Clear" or "Owes money"
     } else if (clarification === "دين") { // "Debt"
         customer.money += Number(amount);
-        customer.status = "عليه فلوس"; // "Owes money"
+        /* customer.status = "عليه فلوس";  */// "Owes money"
     }
 
     customer.transactions.push({
