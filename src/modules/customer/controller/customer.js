@@ -69,7 +69,7 @@ export const createCustomer = asyncHandler(async (req, res, next) => {
 
 //update customer and create transaction
 export const updateCustomer = asyncHandler(async (req, res, next) => {
-    const { name, phone, address,  description, status, money, lastTransaction } = req.body
+    const { name, phone, address, description, status, money, lastTransaction } = req.body
     const { customerId } = req.params
     const customer = await customerModel.findById(customerId)
     if (!customer) {
@@ -147,13 +147,49 @@ export const createCustomerTransactions = asyncHandler(async (req, res, next) =>
     }
 
     // Update the customer's money based on the transaction type
-    if (clarification === "دفع") { // "Payment"
-        customer.money -= amount;
-        customer.money === 0 ? customer.status = "صافي" :" " // "Clear" or "Owes money"
-    } else if (clarification === "دين") { // "Debt"
-        customer.money += Number(amount);
-        /* customer.status = "عليه فلوس";  */// "Owes money"
+    if (customer.status === "عليه فلوس") { // "Owes money"
+        if (clarification === "دين") {
+            customer.money += Number(amount);
+            customer.status = "عليه فلوس"; // Still owes money
+        } else if (clarification === "دفع") {
+            customer.money -= Number(amount);
+            // Update status based on the new value of money
+            if (customer.money < 0) {
+                customer.status = "ليه فلوس"; // "Has money"
+            } else if (customer.money === 0) {
+                customer.status = "صافي"; // "Clear"
+            } else {
+                customer.status = "عليه فلوس"; // Still owes money
+            }
+        }
+    } else if (customer.status === "ليه فلوس") { // "Has money"
+        if (clarification === "دين") {
+            customer.money -= Number(amount);
+            // Update status based on the new value of money
+            if (customer.money < 0) {
+                customer.status = "عليه فلوس"; // "Owes money"
+            } else if (customer.money === 0) {
+                customer.status = "صافي"; // "Clear"
+            } else {
+                customer.status = "ليه فلوس"; // Still has money
+            }
+        } else if (clarification === "دفع") {
+            customer.money += Number(amount);
+            customer.status = "ليه فلوس"; // Still has money
+        }
+    } else if (customer.status === "صافي") {
+        if (clarification === "دين") {
+            customer.money += Number(amount);
+            customer.status = "عليه فلوس";
+        }
+        else if (clarification === "دفع") {
+            customer.money -= Number(amount);
+            customer.status = "ليه فلوس";
+        }
     }
+
+    // Ensure money is always non-negative
+    customer.money = Math.abs(customer.money);
 
     customer.transactions.push({
         amount,
