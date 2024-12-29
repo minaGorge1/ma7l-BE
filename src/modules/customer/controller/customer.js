@@ -296,7 +296,7 @@ export const updateCustomerTransactions = asyncHandler(async (req, res, next) =>
 });
 
 
-// Delete Customer Transactions
+// Delete Customer Transactions`
 export const deleteCustomerTransactions = asyncHandler(async (req, res, next) => {
     const { customerId, transactionId } = req.params;
 
