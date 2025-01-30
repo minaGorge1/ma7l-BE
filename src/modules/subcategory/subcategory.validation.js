@@ -5,7 +5,8 @@ export const createSubcategory = joi.object({
     categoryId: generalFields.id,
     titleId: generalFields.id,
     name: joi.string().min(2).max(50).required(),
-    details: joi.object()
+    details: joi.object(),
+    description: joi.string()
 }).required()
 
 export const updateSubcategory = joi.object({
@@ -13,7 +14,8 @@ export const updateSubcategory = joi.object({
     categoryId: generalFields.id,
     subcategoryId: generalFields.id,
     name: joi.string().min(2).max(50),
-    details: joi.object()
+    details: joi.object(),
+    description: joi.string()
 }).required()
 
 export const deleteSubcategory = joi.object({

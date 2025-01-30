@@ -8,12 +8,14 @@ export const headers = joi.object({
 
 export const createTitle = joi.object({
     name: joi.string().min(2).max(50).required(),
+    description: joi.string()
 }).required()
 
 export const updateTitle = joi.object({
     titleId: generalFields.id,
     name: joi.string().min(2).max(50),
-    isDeleted: joi.boolean()
+    isDeleted: joi.boolean(),
+    description: joi.string()
 }).required()
 
 export const deleteTitle = joi.object({
